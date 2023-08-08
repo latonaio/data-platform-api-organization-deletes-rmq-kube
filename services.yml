@@ -2,28 +2,28 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    run: data-platform-api-organization-deletes-rmq-kube
-  name: data-platform-api-organization-deletes-rmq-kube
+    run: data-platform-api-exchange-rate-deletes-rmq-kube
+  name: data-platform-api-exchange-rate-deletes-rmq-kube
 spec:
   replicas: 1
   selector:
     matchLabels:
-      run: data-platform-api-organization-deletes-rmq-kube
-      app: ORGANIZATION
+      run: data-platform-api-exchange-rate-deletes-rmq-kube
+      app: QUANTITY_UNIT
   template:
     metadata:
       labels:
-        run: data-platform-api-organization-deletes-rmq-kube
-        app: ORGANIZATION
+        run: data-platform-api-exchange-rate-deletes-rmq-kube
+        app: QUANTITY_UNIT
     spec:
-      hostname: data-platform-api-organization-deletes-rmq-kube
+      hostname: data-platform-api-exchange-rate-deletes-rmq-kube
       containers:
-        - name: data-platform-api-organization-deletes-rmq-kube
-          image: latonaio/data-platform-api-organization-deletes-rmq-kube
+        - name: data-platform-api-exchange-rate-deletes-rmq-kube
+          image: latonaio/data-platform-api-exchange-rate-deletes-rmq-kube
           imagePullPolicy: Always
           env:
             - name: "RMQ_QUEUE_FROM"
-              value: "data-platform-api-organization-deletes-queue"
+              value: "data-platform-api-exchange-rate-deletes-queue"
             - name: "RMQ_QUEUE_TO_SQL"
               value: "sql-update-kube"
             - name: "RMQ_QUEUE_TO_EX_CONF"
@@ -33,7 +33,7 @@ spec:
             - name: "RMQ_QUEUE_TO_ITEMS_SUB_FUNC"
               value: ""
             - name: "RMQ_SESSION_CONTROL_QUEUE"
-              value: "data-platform-api-organization-deletes-session-control-queue"
+              value: "data-platform-api-exchange-rate-deletes-session-control-queue"
             - name: "DB_NAME"
               value: "DataPlatformMastersAndTransactionsMysqlKube"
           envFrom:
@@ -46,11 +46,11 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    run: data-platform-api-organization-deletes-rmq-kube
-  name: data-platform-api-organization-deletes-rmq-kube
+    run: data-platform-api-exchange-rate-deletes-rmq-kube
+  name: data-platform-api-exchange-rate-deletes-rmq-kube
 spec:
   selector:
-    run: data-platform-api-organization-deletes-rmq-kube
+    run: data-platform-api-exchange-rate-deletes-rmq-kube
   type: NodePort
   ports:
     - name: api

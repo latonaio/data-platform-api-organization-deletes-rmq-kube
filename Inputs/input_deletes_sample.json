@@ -6,16 +6,15 @@
 	"api_status_code": 200,
 	"runtime_session_id": "boi9ar543dg91ipdnspi099u231280ab0v8af0ew",
 	"business_partner": 201,
-	"service_label": "ORGANIZATION",
+	"service_label": "QUANTITY_UNIT",
 	"api_type": "deletes",
-	"Organization": {
-		"BusinessPartner": null,
-		"Organization": "",
+	"QuantityUnit": {
+		"QuantityUnit": "",
 		"IsMarkedForDeletion": null
 	},
-	"api_schema": "DPFMOrganizationDeletes",
+	"api_schema": "DPFMQuantityUnitDeletes",
 	"accepter": [
-		"Organization"
+		"QuantityUnit"
 	],
 	"deleted": false
 }

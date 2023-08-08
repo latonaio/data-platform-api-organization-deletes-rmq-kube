@@ -5,28 +5,30 @@ import (
 	"fmt"
 )
 
-func ConvertToOrganization(rows *sql.Rows) (*Organization, error) {
+func ConvertToExchangeRate(rows *sql.Rows) (*exchangeRate, error) {
 	defer rows.Close()
-	organization := Organization{}
+	exchangeRate := ExchangeRate{}
 	i := 0
 
 	for rows.Next() {
 		i++
 		err := rows.Scan(
-			&organization.BusinessPartner,
-			&organization.Organization,
-			&organization.IsMarkedForDeletion,
+			&exchangeRate.CurrencyTo,
+			&exchangeRate.CurrencyFrom,
+			&exchangeRate.ValidityStartDate,
+			&exchangeRate.ValidityEndDate,
+			&exchangeRate.IsMarkedForDeletion,
 		)
 		if err != nil {
 			fmt.Printf("err = %+v \n", err)
-			return &organization, err
+			return &exchangeRate, err
 		}
 
 	}
 	if i == 0 {
 		fmt.Printf("DBに対象のレコードが存在しません。")
-		return &organization, nil
+		return &exchangeRate, nil
 	}
 
-	return &organization, nil
+	return &exchangeRate, nil
 }

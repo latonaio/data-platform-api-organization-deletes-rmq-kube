@@ -9,16 +9,16 @@ WORKDIR /go/src/github.com/latonaio
 
 COPY . .
 RUN go mod download
-RUN go build -o data-platform-api-organization-deletes-rmq-kube ./
+RUN go build -o data-platform-api-exchange-rate-deletes-rmq-kube ./
 
 # Runtime Container
 FROM alpine:3.14
 RUN apk add --no-cache libc6-compat
-ENV SERVICE=data-platform-api-organization-deletes-rmq-kube \
+ENV SERVICE=data-platform-api-exchange-rate-deletes-rmq-kube \
     APP_DIR="${AION_HOME}/${POSITION}/${SERVICE}"
 
 WORKDIR ${AION_HOME}
 
-COPY --from=builder /go/src/github.com/latonaio/data-platform-api-organization-deletes-rmq-kube .
+COPY --from=builder /go/src/github.com/latonaio/data-platform-api-exchange-rate-deletes-rmq-kube .
 
-CMD ["./data-platform-api-organization-deletes-rmq-kube"]
+CMD ["./data-platform-api-exchange-rate-deletes-rmq-kube"]

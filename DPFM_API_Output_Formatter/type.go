@@ -25,11 +25,13 @@ type SDC struct {
 }
 
 type Message struct {
-	Organization *Organization `json:"Organization"`
+	ExchangeRate *ExchangeRate `json:"ExchangeRate"`
 }
 
-type Organization struct {
-	BusinessPartner     int    `json:"BusinessPartner"`
-	Organization        string `json:"Organization"`
-	IsMarkedForDeletion *bool  `json:"IsMarkedForDeletion"`
+type ExchangeRate struct {
+	CurrencyTo          *string `json:"CurrencyTo"`
+	CurrencyFrom        *string `json:"CurrencyFrom"`
+	ValidityStartDate   *string `json:"ValidityStartDate"`
+	ValidityEndDate     *string `json:"ValidityEndDate"`
+	IsMarkedForDeletion *bool   `json:"IsMarkedForDeletion"`
 }

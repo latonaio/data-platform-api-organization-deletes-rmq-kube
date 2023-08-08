@@ -63,14 +63,16 @@ type SDC struct {
 	BusinessPartner  int      `json:"business_partner"`
 	ServiceLabel     string   `json:"service_label"`
 	APIType          string   `json:"api_type"`
-	Organization     string   `json:"Organization"`
+	ExchangeRate     string   `json:"ExchangeRate"`
 	APISchema        string   `json:"api_schema"`
 	Accepter         []string `json:"accepter"`
 	Deleted          bool     `json:"deleted"`
 }
 
-type Organization struct {
-	BusinessPartner     *int    `json:"BusinessPartner"`
-	Organization        *string `json:"Organization"`
+type ExchangeRate struct {
+	CurrencyTo          *string `json:"CurrencyTo"`
+	CurrencyFrom        *string `json:"CurrencyFrom"`
+	ValidityStartDate   *string `json:"ValidityStartDate"`
+	ValidityEndDate     *string `json:"ValidityEndDate"`
 	IsMarkedForDeletion *bool   `json:"IsMarkedForDeletion"`
 }

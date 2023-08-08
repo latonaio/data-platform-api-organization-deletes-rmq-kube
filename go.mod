@@ -1,4 +1,4 @@
-module data-platform-api-organization-deletes-rmq-kube
+module data-platform-api-exchange-rate-deletes-rmq-kube
 
 go 1.19
 

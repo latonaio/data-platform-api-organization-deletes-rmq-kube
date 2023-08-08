@@ -2,9 +2,9 @@ package dpfm_api_caller
 
 import (
 	"context"
-	dpfm_api_input_reader "data-platform-api-organization-deletes-rmq-kube/DPFM_API_Input_Reader"
-	dpfm_api_output_formatter "data-platform-api-organization-deletes-rmq-kube/DPFM_API_Output_Formatter"
-	"data-platform-api-organization-deletes-rmq-kube/config"
+	dpfm_api_input_reader "data-platform-api-exchange-rate-deletes-rmq-kube/DPFM_API_Input_Reader"
+	dpfm_api_output_formatter "data-platform-api-exchange-rate-deletes-rmq-kube/DPFM_API_Output_Formatter"
+	"data-platform-api-exchange-rate-deletes-rmq-kube/config"
 
 	"github.com/latonaio/golang-logging-library-for-data-platform/logger"
 	database "github.com/latonaio/golang-mysql-network-connector"
@@ -50,12 +50,12 @@ func (c *DPFMAPICaller) deleteSqlProcess(
 	accepter []string,
 	log *logger.Logger,
 ) *dpfm_api_output_formatter.Message {
-	var organizationData *dpfm_api_output_formatter.Organization
+	var exchangeRateData *dpfm_api_output_formatter.ExchangeRate
 	for _, a := range accepter {
 		switch a {
-		case "Organization":
-			h := c.organizationDelete(input, output, log)
-			organizationData = h
+		case "ExchangeRate":
+			h := c.exchangeRateDelete(input, output, log)
+			exchangeRateData = h
 			if h == nil {
 				continue
 			}
@@ -63,27 +63,22 @@ func (c *DPFMAPICaller) deleteSqlProcess(
 	}
 
 	return &dpfm_api_output_formatter.Message{
-		Organization: organizationData,
+		ExchangeRate: exchangeRate,
 	}
 }
 
-func (c *DPFMAPICaller) organizationDelete(
+func (c *DPFMAPICaller) exchangeRateDelete(
 	input *dpfm_api_input_reader.SDC,
 	output *dpfm_api_output_formatter.SDC,
 	log *logger.Logger,
-) *dpfm_api_output_formatter.Organization {
+) *dpfm_api_output_formatter.ExchangeRate {
 	sessionID := input.RuntimeSessionID
-	organization := c.OrganizationRead(input, log)
-	organization.SupplyChainRelationshipID = input.Organization.SupplyChainRelationshipID
-	organization.Buyer = input.Organization.Buyer
-	organization.Seller = input.Organization.Seller
-	organization.ConditionRecord = input.Organization.ConditionRecord
-	organization.ConditionSequentialNumber = input.Organization.ConditionSequentialNumber
-	organization.Product = input.Organization.Product
-	organization.ConditionValidityStartDate = input.Organization.ConditionValidityStartDate
-	organization.ConditionValidityEndDate = input.Organization.ConditionValidityEndDate
-	organization.IsMarkedForDeletion = input.Organization.IsMarkedForDeletion
-	res, err := c.rmq.SessionKeepRequest(nil, c.conf.RMQ.QueueToSQL()[0], map[string]interface{}{"message": organization, "function": "OrganizationOrganization", "runtime_session_id": sessionID})
+	exchangeRate := c.CurrencyTo(input, log)
+	exchangeRate := c.CurrencyFrom(input, log)
+	exchangeRate := c.ValidityStartDate(input, log)
+	exchangeRate := c.ValidityEndDate(input, log)
+	exchangeRate.IsMarkedForDeletion = input.ExchangeRate.IsMarkedForDeletion
+	res, err := c.rmq.SessionKeepRequest(nil, c.conf.RMQ.QueueToSQL()[0], map[string]interface{}{"message": exchangeRate, "function": "ExchangeRateExchangeRate", "runtime_session_id": sessionID})
 	if err != nil {
 		err = xerrors.Errorf("rmq error: %w", err)
 		log.Error("%+v", err)
@@ -92,11 +87,11 @@ func (c *DPFMAPICaller) organizationDelete(
 	res.Success()
 	if !checkResult(res) {
 		output.SQLUpdateResult = getBoolPtr(false)
-		output.SQLUpdateError = "Organization Data cannot delete"
+		output.SQLUpdateError = "ExchangeRate Data cannot delete"
 		return nil
 	}
 
-	return organization
+	return exchangeRate
 }
 
 func checkResult(msg rabbitmq.RabbitmqMessage) bool {
